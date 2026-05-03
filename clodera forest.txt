@@ -1,0 +1,59 @@
+1. Create Data File 
+
+nano forest.csv
+
+temp,humidity,wind,area
+32,45,6,12
+36,35,7,22
+30,55,5,8
+34,40,8,28
+33,50,6,15
+
+2. Upload to HDFS (Cloudera)
+
+hdfs dfs -mkdir -p /forest
+hdfs dfs -put forest.csv /forest
+
+3. Hive (Data Mining)
+
+hive
+
+Create Table
+CREATE TABLE forest (
+temp INT,
+humidity INT,
+wind INT,
+area FLOAT
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+
+Load Data
+
+LOAD DATA INPATH '/forest/forest.csv'
+INTO TABLE forest;
+
+Query
+
+SELECT temp, AVG(area)
+FROM forest
+GROUP BY temp;
+
+
+
+4. Python Visualization
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv("forest.csv")
+
+plt.plot(df['temp'], df['area'])
+plt.title("Temp vs Area")
+plt.show()
+
+sns.barplot(x='temp', y='area', data=df)
+plt.show()
+
+sns.heatmap(df.corr(), annot=True)
+plt.show()
