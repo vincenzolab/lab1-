@@ -1,0 +1,141 @@
+IRIS DATASET (FINAL — GRAPH + SETUP)
+1. 1D → Bar Chart
+
+Columns: Species
+Rows: COUNT(Id)
+
+Explain:
+Shows number of samples in each species.
+Helps understand class distribution.
+
+2. 2D → Scatter Plot
+
+Columns: PetalWidthCm
+Rows: PetalLengthCm
+Color: Species
+
+Explain:
+Shows relationship between petal length and width.
+Clusters help identify species.
+
+3. 3D → Bubble Chart
+
+Columns: PetalWidthCm
+Rows: PetalLengthCm
+Size: SepalLengthCm
+Color: Species
+
+Explain:
+Adds third variable using size.
+Helps compare three features.
+
+4. Temporal → Line Chart
+
+Columns: Id
+Rows: PetalLengthCm
+
+Explain:
+Id acts as sequence (no real time).
+Shows variation across data.
+
+5. Multidimensional → Scatter Plot (Enhanced)
+
+Columns: PetalWidthCm
+Rows: PetalLengthCm
+Color: Species
+Size: SepalWidthCm
+
+Explain:
+Multiple variables in one chart.
+Helps analyze complex patterns.
+
+6. Tree → Treemap
+
+Category: Species
+Size: COUNT(Id)
+
+Explain:
+Shows proportion of each species.
+Size represents count.
+
+7. Network → Scatter / Relationship Plot
+
+Columns: Species
+Rows: AVG(PetalLengthCm)
+
+Explain:
+Shows relation between species and feature.
+Used to compare categories.
+
+
+
+👨‍💼 ADULT DATASET (FINAL — GRAPH + SETUP)
+1. 1D → Bar Chart
+
+Columns: Income
+Rows: COUNT(*)
+
+Explain:
+Shows distribution of income groups.
+Helps identify imbalance.
+
+2. 2D → Scatter Plot
+
+Columns: Hours-per-week
+Rows: Age
+Color: Income
+
+Explain:
+Shows relation between age and working hours.
+Color separates income classes.
+
+3. 3D → Bubble Chart
+
+Columns: Hours-per-week
+Rows: Age
+Size: Education-num
+Color: Income
+
+Explain:
+Adds education as third dimension.
+Helps analyze multiple factors.
+
+4. Temporal → Line Chart
+
+Columns: Age
+Rows: COUNT(*)
+
+Explain:
+Age used as time-like variable.
+Shows trend of income with age.
+
+5. Multidimensional → Scatter Plot
+
+Columns: Hours-per-week
+Rows: Age
+Color: Income
+Size: Education-num
+Shape: Sex
+
+Explain:
+Combines multiple variables.
+Useful for deeper analysis.
+
+6. Tree → Treemap
+
+Category: Occupation
+Size: COUNT(*)
+Color: Income
+
+Explain:
+Shows job distribution hierarchically.
+Highlights dominant occupations.
+
+7. Network → Heatmap / Relationship
+
+Columns: Education
+Rows: Occupation
+
+Explain:
+Shows relationship between education and job.
+Used to analyze connections.
