@@ -1,0 +1,98 @@
+1. Create Data Files
+flights.csv
+
+nano flights.csv
+1001,2008-01-01,AA,JFK,LAX,10,5
+1002,2008-01-02,DL,ATL,ORD,20,15
+1003,2008-01-03,UA,SFO,JFK,5,0
+1004,2008-01-04,AI,DEL,BOM,30,25
+1005,2008-01-05,6E,BLR,HYD,0,-5
+
+
+external_airport.txt
+
+nano external_airport.txt
+JFK,John F Kennedy Airport,New York,NY
+LAX,Los Angeles Airport,Los Angeles,CA
+ATL,Atlanta Airport,Atlanta,GA
+ORD,Chicago O Hare Airport,Chicago,IL
+SFO,San Francisco Airport,San Francisco,CA
+DEL,Delhi Airport,Delhi,DL
+BOM,Mumbai Airport,Mumbai,MH
+BLR,Bangalore Airport,Bangalore,KA
+HYD,Hyderabad Airport,Hyderabad,TS
+
+
+2. Upload to HDFS
+hdfs dfs -mkdir -p /input
+hdfs dfs -put flights.csv /input
+
+hdfs dfs -mkdir -p /user/cloudera/external_airports
+hdfs dfs -put external_airport.txt /user/cloudera/external_airports
+
+3. Open Hive
+hive
+
+4. Create Database
+
+CREATE DATABASE flight_db;
+USE flight_db;
+
+
+5. Create Internal Table
+
+CREATE TABLE flights (
+    flight_id INT,
+    flight_date STRING,
+    carrier STRING,
+    origin STRING,
+    destination STRING,
+    dep_delay INT,
+    arr_delay INT
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+
+6. Load Data
+
+LOAD DATA INPATH '/input/flights.csv'
+INTO TABLE flights;
+
+7. Insert + Alter
+INSERT INTO flights VALUES (1006,'2008-01-06','AA','LAX','JFK',15,10);
+
+ALTER TABLE flights ADD COLUMNS (flight_duration INT);
+
+8. Create External Table
+
+CREATE EXTERNAL TABLE external_airports (
+    airport_code STRING,
+    airport_name STRING,
+    city STRING,
+    state STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+LOCATION '/user/cloudera/external_airports';
+
+9. Join
+SELECT f.flight_id, a.airport_name
+FROM flights f
+JOIN external_airports a
+ON f.origin = a.airport_code;
+
+10. Index
+
+CREATE INDEX idx_airport
+ON TABLE external_airports (airport_code)
+AS 'COMPACT'
+WITH DEFERRED REBUILD;
+
+ALTER INDEX idx_airport ON external_airports REBUILD;
+
+11. Final Query
+
+SELECT flight_date, AVG(dep_delay) AS avg_delay
+FROM flights
+WHERE flight_date LIKE '2008%'
+GROUP BY flight_date;
