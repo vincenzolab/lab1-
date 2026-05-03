@@ -1,0 +1,95 @@
+Steps (Cloudera)
+1. Open Hive
+hive
+
+2. Create Database
+
+CREATE DATABASE flightdb;
+USE flightdb;
+
+3. Create Table
+
+CREATE TABLE flights (
+  Year INT,
+  Month INT,
+  Day INT,
+  FlightNo STRING,
+  Origin STRING,
+  Destination STRING,
+  Airline STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+
+4. Create External Table
+
+CREATE EXTERNAL TABLE flights_ext (
+  Year INT,
+  Month INT,
+  Day INT,
+  FlightNo STRING,
+  Origin STRING,
+  Destination STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+LOCATION '/user/cloudera/flights_data';
+
+5. Exit Hive
+exit;
+
+6. Create File
+nano flights.csv
+
+Data:
+
+2008,1,1,F1,NYC,LAX,Delta
+2008,1,1,F2,LAX,SFO,United
+2008,1,2,F3,NYC,SFO,Indigo
+
+7. Upload to HDFS
+hdfs dfs -mkdir /input
+hdfs dfs -put flights.csv /input
+
+8. Open Hive Again
+hive
+USE flightdb;
+
+9. Load Data
+LOAD DATA INPATH '/input/flights.csv'
+INTO TABLE flights;
+
+10. Insert Row
+INSERT INTO flights VALUES
+(2008,1,3,'F4','SFO','NYC','Delta');
+
+11. Create Second Table
+CREATE TABLE airlines (
+  FlightNo STRING,
+  AirlineName STRING
+);
+
+12. Insert Data
+INSERT INTO airlines VALUES
+('F1','Delta'),
+('F2','United');
+
+13. Join
+SELECT f.FlightNo, f.Origin, f.Destination, a.AirlineName
+FROM flights f
+JOIN airlines a
+ON f.FlightNo = a.FlightNo;
+
+14. Index
+CREATE INDEX flight_index
+ON TABLE flights (FlightNo)
+AS 'COMPACT'
+WITH DEFERRED REBUILD;
+
+ALTER INDEX flight_index ON flights REBUILD;
+
+15. Final Query
+SELECT Day, COUNT(*) AS TotalFlights
+FROM flights
+WHERE Year = 2008
+GROUP BY Day;
