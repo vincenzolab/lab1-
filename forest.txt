@@ -1,0 +1,64 @@
+🖥️ 🧪 PART 1 — PREPARE DATA
+
+✅ Step 1: Create File
+nano forest.csv
+Paste:
+temp,humidity,wind,area
+30,40,5,10
+35,30,6,20
+28,50,4,5
+32,35,7,25
+Save:
+ CTRL + X → Y → Enter
+
+✅ Step 2: Upload to HDFS
+hdfs dfs -mkdir /forest
+hdfs dfs -put forest.csv /forest
+
+
+PART B — HIVE (Data Mining)
+
+✅ Step 7: Open Hive
+hive
+
+✅ Step 8: Create Table
+CREATE TABLE forest (
+temp INT,
+humidity INT,
+wind INT,
+area FLOAT
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+
+✅ Step 9: Load Data
+LOAD DATA INPATH '/forest/forest.csv'
+INTO TABLE forest;
+
+✅ Step 10: Query
+SELECT temp, AVG(area)
+FROM forest
+GROUP BY temp;
+
+📊 PART C — VISUALIZATION (Python)
+
+✅ Step 11: Python Code
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv("forest.csv")
+
+# Line Plot
+plt.plot(df['temp'], df['area'])
+plt.title("Temp vs Area")
+plt.show()
+
+# Bar Plot
+sns.barplot(x='temp', y='area', data=df)
+plt.show()
+
+# Heatmap
+sns.heatmap(df.corr(), annot=True)
+plt.show()
+
