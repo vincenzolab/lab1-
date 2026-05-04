@@ -1,0 +1,8 @@
+import sys
+
+for line in sys.stdin:
+    line = line.strip()
+    if line.startswith("temp"):
+        continue
+    temp, humidity, wind, area = line.split(",")
+    print(f"{temp}\t{area}")
