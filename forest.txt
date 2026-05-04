@@ -15,7 +15,8 @@ Save:
 hdfs dfs -mkdir /forest
 hdfs dfs -put forest.csv /forest
 
-
+Run MapReduce
+hdfs dfs -cat /forest/forest.csv | python3 mapper.py | sort | python3 reducer.py
 PART B — HIVE (Data Mining)
 
 ✅ Step 7: Open Hive
